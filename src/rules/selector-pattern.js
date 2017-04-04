@@ -11,23 +11,21 @@ CSSLint.addRule({
     browsers: "All",
 
     // initialization
-    init: function(parser, reporter) {
+    init: function(parser, reporter, options) {
         "use strict";
         var rule = this,
-            rxCamel = /^[a-z]+([0-9]+|[A-Z][a-z]+)?/,
-            rxSnake = /^[a-z][a-z0-9\_]+$/,
-            rxDashs = /^[a-z][a-z0-9\-]*$/,
-            choice = "hyphen",
+            rxCamel = { "accept": /^[a-z]+([0-9]+|[A-Z][a-z]+)?/, "reject": /[\-\_]+/ },
+            rxSnake = { "accept": /^[a-z][a-z0-9\_]+$/, "reject": /\-/ },
+            rxDashs = { "accept": /^[a-z][a-z0-9\-]*$/, "reject": /\_/ },
+            choice = options ? options["name-pattern"] : "bem",
             pattern;
 
-        /**
-         * use the hyphen pattern
-         */
+        choice = (choice || "bem").toString().toLowerCase();
         switch (choice) {
-            case "camel":
+            case "camelcase":
                 pattern = rxCamel;
                 break;
-            case "sname":
+            case "snakecase":
                 pattern = rxSnake;
                 break;
             default:
@@ -46,8 +44,8 @@ CSSLint.addRule({
                     if (event.selectors[sel].parts[pts].type === 8) {
                         bites = event.selectors[sel].parts[pts].text.split(/\#|\./);
                         for (cls = 0; cls < bites.length; cls += 1) {
-                            if (bites[cls] && !pattern.test(bites[cls])) {
-                                reporter.report("Selector naming convention not followed.", event.line, event.col, rule);
+                            if (bites[cls] && (!pattern.accept.test(bites[cls]) || pattern.reject.test(bites[cls]))) {
+                                reporter.report("Selector naming convention (" + choice + ") not followed.", event.line, event.col, rule);
                             }
                         }
                     }
