@@ -20,7 +20,8 @@ function cli(api) {
         "exclude-list": { "format" : "<file|dir[,file|dir]+>", "description" : "Indicate which files/directories to exclude from being linted." },
         "config"      : { "format" : "<file>",                 "description" : "Reads csslint options from specified file." },
         "version"     : { "format" : "",                       "description" : "Outputs the current version number." },
-        "name-pattern": { "format" : "<pattern>",              "description" : "Indicate which pattern naming should follow." }
+        "name-pattern": { "format" : "<pattern>",              "description" : "Indicate which pattern naming should follow." },
+        "max-rules"   : { "format" : "<count>",                "description" : "The maximum number of rules allowed in a stylesheet." }
     };
 
     //-------------------------------------------------------------------------

@@ -39,8 +39,8 @@
             Assert.areEqual(0, result.messages.length);
         },
 
-        "Using 500 or more rules should result in a warning": function() {
-            var result = CSSLint.verify(this.cssB, { "rules-max": 1 });
+        "Using more rules than the limit should result in a warning": function() {
+            var result = CSSLint.verify(this.cssB, { "rules-max": 1 }, { "max-rules": MAX_RULES });
 
             Assert.areEqual(1, result.messages.length);
             Assert.areEqual("warning", result.messages[0].type);
